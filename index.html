@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kervin Jacquet — Cybersecurity Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --bg:          #07111D;
+      --surface:     #0E1E30;
+      --surface-2:   #152840;
+      --border:      #1C3352;
+      --border-hi:   #2A4E78;
+      --accent:      #3B82F6;
+      --accent-dim:  rgba(59,130,246,0.12);
+      --amber:       #F59E0B;
+      --amber-dim:   rgba(245,158,11,0.12);
+      --green:       #4ADE80;
+      --green-dim:   rgba(74,222,128,0.10);
+      --text:        #E2EEF9;
+      --text-muted:  #7A97B5;
+      --text-dim:    #3D5A78;
+      --mono:        'JetBrains Mono', monospace;
+      --sans:        'Inter', sans-serif;
+      --display:     'Space Grotesk', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Scrolling Status Bar ── */
+    .status-bar {
+      background: var(--accent);
+      padding: 7px 0;
+      overflow: hidden;
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 35s linear infinite;
+    }
+    .ticker-track span {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.1em;
+      padding: 0 48px;
+      white-space: nowrap;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,17,29,0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.18s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .hero-inner { max-width: 680px; }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hero-name {
+      font-family: var(--display);
+      font-size: clamp(52px, 9vw, 84px);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+      min-height: 1.05em;
+    }
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink-cur 0.75s step-end infinite;
+    }
+    @keyframes blink-cur {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    .hero-role {
+      font-family: var(--display);
+      font-size: clamp(17px, 2.5vw, 22px);
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .hero-role strong { color: var(--amber); font-weight: 600; }
+
+    .hero-bio {
+      font-size: 15.5px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 11px 26px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: var(--text);
+      padding: 11px 26px;
+      border-radius: 6px;
+      border: 1px solid var(--border-hi);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: border-color 0.18s, transform 0.18s;
+    }
+    .btn-outline:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+    /* ── Section Shell ── */
+    .section-wrap {
+      padding: 80px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .section-heading {
+      font-family: var(--display);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 44px;
+    }
+
+    /* ── About ── */
+    .about-text {
+      font-size: 16.5px;
+      color: var(--text-muted);
+      line-height: 1.85;
+      max-width: 640px;
+    }
+    .about-text strong { color: var(--text); font-weight: 600; }
+
+    /* ── Certifications ── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cert-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+    .cert-issuer {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cert-name {
+      font-family: var(--display);
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 18px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+    .badge-complete {
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.2);
+    }
+    .badge-progress {
+      background: var(--amber-dim);
+      color: var(--amber);
+      border: 1px solid rgba(245,158,11,0.22);
+    }
+    .badge::before { content: '●'; font-size: 6px; }
+
+    /* ── Projects ── */
+    .projects-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 60px;
+      gap: 20px;
+      align-items: start;
+      transition: border-color 0.2s;
+    }
+    .project-card:hover { border-color: var(--border-hi); }
+
+    .proj-cat {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .proj-title {
+      font-family: var(--display);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .proj-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .proj-desc code {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .proj-num {
+      font-family: var(--mono);
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--border);
+      text-align: right;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 32px;
+    }
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .skill-list li {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .skill-list li::before {
+      content: '→';
+      color: var(--accent);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* ── Contact ── */
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 56px 48px;
+      text-align: center;
+    }
+    .contact-heading {
+      font-family: var(--display);
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .contact-sub {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 36px;
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero, .section-wrap { padding: 60px 20px; }
+      .project-card { grid-template-columns: 1fr; }
+      .proj-num { display: none; }
+      .contact-box { padding: 36px 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+      .cursor { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Status Bar ── -->
+<div class="status-bar" aria-hidden="true">
+  <div class="ticker-track">
+    <span>AVAILABLE FOR HIRE&nbsp;&nbsp;//&nbsp;&nbsp;ENTRY-LEVEL CYBERSECURITY&nbsp;&nbsp;//&nbsp;&nbsp;NANUET, NY&nbsp;&nbsp;//&nbsp;&nbsp;OPEN TO REMOTE&nbsp;&nbsp;//&nbsp;&nbsp;COMPTIA SECURITY+ IN PROGRESS&nbsp;&nbsp;//&nbsp;&nbsp;AVAILABLE FOR HIRE&nbsp;&nbsp;//&nbsp;&nbsp;ENTRY-LEVEL CYBERSECURITY&nbsp;&nbsp;//&nbsp;&nbsp;NANUET, NY&nbsp;&nbsp;//&nbsp;&nbsp;OPEN TO REMOTE&nbsp;&nbsp;//&nbsp;&nbsp;COMPTIA SECURITY+ IN PROGRESS&nbsp;&nbsp;//</span>
+    <span>AVAILABLE FOR HIRE&nbsp;&nbsp;//&nbsp;&nbsp;ENTRY-LEVEL CYBERSECURITY&nbsp;&nbsp;//&nbsp;&nbsp;NANUET, NY&nbsp;&nbsp;//&nbsp;&nbsp;OPEN TO REMOTE&nbsp;&nbsp;//&nbsp;&nbsp;COMPTIA SECURITY+ IN PROGRESS&nbsp;&nbsp;//&nbsp;&nbsp;AVAILABLE FOR HIRE&nbsp;&nbsp;//&nbsp;&nbsp;ENTRY-LEVEL CYBERSECURITY&nbsp;&nbsp;//&nbsp;&nbsp;NANUET, NY&nbsp;&nbsp;//&nbsp;&nbsp;OPEN TO REMOTE&nbsp;&nbsp;//&nbsp;&nbsp;COMPTIA SECURITY+ IN PROGRESS&nbsp;&nbsp;//</span>
+  </div>
+</div>
+
+<!-- ── Nav ── -->
+<nav>
+  <a href="#" class="nav-logo">KJ // SEC</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Cybersecurity Portfolio</p>
+    <h1 class="hero-name" id="hero-name-el"><span class="cursor"></span></h1>
+    <p class="hero-role">Entry-Level Cybersecurity Analyst &amp; <strong>IT Professional</strong></p>
+    <p class="hero-bio">
+      Google-certified cybersecurity professional building hands-on expertise in network security, incident response, and cloud environments. Currently pursuing CompTIA Security+ and Google AI Engineering certifications — applying real skills from real labs.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View My Work</a>
+      <a href="#contact"  class="btn-outline">Get In Touch</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── About ── -->
+<section class="section-wrap" id="about">
+  <p class="section-label">About</p>
+  <h2 class="section-heading">Who I Am</h2>
+  <p class="about-text">
+    I'm a <strong>cybersecurity professional in training</strong> based in Nanuet, NY, building a strong technical foundation through structured coursework and hands-on lab work. My background spans <strong>IT support, network security, cloud security, and security operations</strong> — giving me a well-rounded view of how systems are built and how they need to be defended.<br><br>
+    I've earned three Google Professional Certificates covering IT Support, Cybersecurity, and Cloud Cybersecurity, and I'm actively working toward <strong>CompTIA Security+</strong> and Andrew Ng's <strong>Machine Learning Specialization</strong> through DeepLearning.AI. Every project in this portfolio comes from real lab work — documentation I wrote, packet captures I analyzed, and scripts I built myself.
+  </p>
+</section>
+
+<!-- ── Certifications ── -->
+<section class="section-wrap" id="certs">
+  <p class="section-label">Credentials</p>
+  <h2 class="section-heading">Certifications</h2>
+  <div class="cert-grid">
+    <div class="cert-card">
+      <p class="cert-issuer">Google / Coursera</p>
+      <p class="cert-name">IT Support Professional Certificate</p>
+      <span class="badge badge-complete">Completed</span>
+    </div>
+    <div class="cert-card">
+      <p class="cert-issuer">Google / Coursera</p>
+      <p class="cert-name">Cybersecurity Professional Certificate</p>
+      <span class="badge badge-complete">Completed</span>
+    </div>
+    <div class="cert-card">
+      <p class="cert-issuer">Google / Coursera</p>
+      <p class="cert-name">Cloud Cybersecurity Professional Certificate</p>
+      <span class="badge badge-complete">Completed</span>
+    </div>
+    <div class="cert-card">
+      <p class="cert-issuer">CompTIA</p>
+      <p class="cert-name">Security+</p>
+      <span class="badge badge-progress">In Progress</span>
+    </div>
+    <div class="cert-card">
+      <p class="cert-issuer">DeepLearning.AI / Coursera</p>
+      <p class="cert-name">AI For Everyone — Andrew Ng</p>
+      <span class="badge badge-complete">Completed</span>
+    </div>
+    <div class="cert-card">
+      <p class="cert-issuer">DeepLearning.AI / Coursera</p>
+      <p class="cert-name">Machine Learning Specialization — Andrew Ng</p>
+      <span class="badge badge-progress">In Progress</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ── -->
+<section class="section-wrap" id="projects">
+  <p class="section-label">Work</p>
+  <h2 class="section-heading">Projects</h2>
+  <div class="projects-list">
+
+    <div class="project-card">
+      <div>
+        <p class="proj-cat">Security Audit · Risk Assessment</p>
+        <h3 class="proj-title">Botium Toys Internal Security Audit</h3>
+        <p class="proj-desc">
+          Conducted a full internal security audit for a simulated small business environment. Produced a
+          controls checklist identifying gaps across physical, administrative, and technical safeguards, paired
+          with a risk assessment report measuring organizational posture against <strong>PCI-DSS</strong>
+          and <strong>GDPR</strong> compliance requirements.
+        </p>
+        <div class="tags">
+          <span class="tag">NIST CSF</span>
+          <span class="tag">PCI-DSS</span>
+          <span class="tag">GDPR</span>
+          <span class="tag">Risk Assessment</span>
+          <span class="tag">Controls Audit</span>
+        </div>
+      </div>
+      <div class="proj-num">01</div>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <p class="proj-cat">Network Security · Packet Analysis</p>
+        <h3 class="proj-title">Network Intrusion Analysis</h3>
+        <p class="proj-desc">
+          Analyzed packet capture data using <code>Wireshark</code> and <code>tcpdump</code> to identify
+          malicious network activity. Produced written analysis reports tracking the progression of a simulated
+          DDoS attack and network intrusion — documenting traffic anomalies, attack signatures, and
+          recommended mitigation steps.
+        </p>
+        <div class="tags">
+          <span class="tag">Wireshark</span>
+          <span class="tag">tcpdump</span>
+          <span class="tag">DDoS Analysis</span>
+          <span class="tag">Network Forensics</span>
+          <span class="tag">Log Auditing</span>
+        </div>
+      </div>
+      <div class="proj-num">02</div>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <p class="proj-cat">Incident Response · Documentation</p>
+        <h3 class="proj-title">Incident Response Playbook &amp; Post-Incident Reports</h3>
+        <p class="proj-desc">
+          Documented the full lifecycle of a simulated security breach using industry-standard incident
+          handler templates. Reports cover breach detection, containment strategy, and remediation steps —
+          following a structured playbook aligned with NIST IR phases: Preparation, Detection, Containment,
+          Eradication, and Recovery.
+        </p>
+        <div class="tags">
+          <span class="tag">NIST IR</span>
+          <span class="tag">Incident Playbook</span>
+          <span class="tag">Breach Documentation</span>
+          <span class="tag">Containment Strategy</span>
+        </div>
+      </div>
+      <div class="proj-num">03</div>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <p class="proj-cat">Security Automation · Python · SQL</p>
+        <h3 class="proj-title">Automated Access Control &amp; Log Filtering</h3>
+        <p class="proj-desc">
+          Built a Python script to automate access control management — using <code>import re</code>
+          (regex) and file I/O to parse an IP allow-list and remove unauthorized entries automatically.
+          Paired with SQL queries scanning database logs for failed login attempts, flagging potential
+          brute-force and credential-stuffing activity.
+        </p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">Regex</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Access Control</span>
+          <span class="tag">Log Analysis</span>
+          <span class="tag">Automation</span>
+        </div>
+      </div>
+      <div class="proj-num">04</div>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <p class="proj-cat">System Administration · Active Directory</p>
+        <h3 class="proj-title">Directory Services &amp; User Management</h3>
+        <p class="proj-desc">
+          Designed and documented an <strong>Active Directory</strong> environment for a simulated organization —
+          mapping out Organizational Units (OUs), configuring user permission structures, and creating
+          Group Policy Objects (GPOs) to enforce security baselines across the environment. Documentation
+          covers OU hierarchy design, role-based access control, and policy enforcement strategy.
+        </p>
+        <div class="tags">
+          <span class="tag">Active Directory</span>
+          <span class="tag">Group Policy (GPO)</span>
+          <span class="tag">Organizational Units</span>
+          <span class="tag">User Permissions</span>
+          <span class="tag">RBAC</span>
+          <span class="tag">Windows Server</span>
+        </div>
+      </div>
+      <div class="proj-num">05</div>
+    </div>
+
+    <div class="project-card">
+      <div>
+        <p class="proj-cat">Operating Systems · Command Line</p>
+        <h3 class="proj-title">Multi-Platform Troubleshooting Playbooks</h3>
+        <p class="proj-desc">
+          Built structured troubleshooting playbooks covering both Linux and Windows environments.
+          Linux playbook uses <code>bash</code> commands for system log inspection, process management,
+          and disk repair. Windows playbook mirrors the same coverage using <code>PowerShell</code> —
+          giving a side-by-side reference for diagnosing and resolving common OS-level issues across platforms.
+        </p>
+        <div class="tags">
+          <span class="tag">Bash</span>
+          <span class="tag">PowerShell</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Windows</span>
+          <span class="tag">System Logs</span>
+          <span class="tag">Process Management</span>
+          <span class="tag">Disk Repair</span>
+        </div>
+      </div>
+      <div class="proj-num">06</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Skills ── -->
+<section class="section-wrap" id="skills">
+  <p class="section-label">Capabilities</p>
+  <h2 class="section-heading">Skills</h2>
+  <div class="skills-grid">
+    <div>
+      <p class="skill-group-title">Tools</p>
+      <ul class="skill-list">
+        <li>Wireshark</li>
+        <li>tcpdump</li>
+        <li>Python</li>
+        <li>SQL</li>
+        <li>Bash</li>
+        <li>PowerShell</li>
+      </ul>
+    </div>
+    <div>
+      <p class="skill-group-title">Frameworks</p>
+      <ul class="skill-list">
+        <li>NIST CSF</li>
+        <li>NIST IR</li>
+        <li>PCI-DSS</li>
+        <li>GDPR</li>
+      </ul>
+    </div>
+    <div>
+      <p class="skill-group-title">Domains</p>
+      <ul class="skill-list">
+        <li>Network Security</li>
+        <li>Incident Response</li>
+        <li>Security Auditing</li>
+        <li>Risk Assessment</li>
+        <li>Cloud Security</li>
+        <li>System Administration</li>
+      </ul>
+    </div>
+    <div>
+      <p class="skill-group-title">Platforms</p>
+      <ul class="skill-list">
+        <li>Active Directory</li>
+        <li>Group Policy (GPO)</li>
+        <li>Linux</li>
+        <li>Windows Server</li>
+        <li>Google Cloud</li>
+      </ul>
+    </div>
+    <div>
+      <p class="skill-group-title">Fundamentals</p>
+      <ul class="skill-list">
+        <li>TCP/IP · DNS · HTTP</li>
+        <li>Log Analysis</li>
+        <li>IT Support</li>
+        <li>RBAC</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section class="section-wrap" id="contact">
+  <div class="contact-box">
+    <h2 class="contact-heading">Let's Connect</h2>
+    <p class="contact-sub">Open to entry-level roles, internships, and any opportunity to grow in cybersecurity.</p>
+    <div class="contact-actions">
+      <a href="mailto:Itskervin@gmail.com" class="btn-primary">Itskervin@gmail.com</a>
+      <a href="https://github.com/ImKervln" target="_blank" rel="noopener" class="btn-outline">GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>Kervin Jacquet &nbsp;·&nbsp; Nanuet, NY &nbsp;·&nbsp; Built with intent, not a template.</p>
+</footer>
+
+<script>
+  /* Typing effect for hero name */
+  (function () {
+    const el    = document.getElementById('hero-name-el');
+    const name  = 'Kervin Jacquet';
+    const cursor = el.querySelector('.cursor');
+    let i = 0;
+    const delay = 500;   // ms before typing starts
+    const speed = 72;    // ms per character
+
+    function type() {
+      if (i < name.length) {
+        const char = document.createTextNode(name[i]);
+        el.insertBefore(char, cursor);
+        i++;
+        setTimeout(type, speed);
+      }
+    }
+    setTimeout(type, delay);
+  })();
+</script>
+
+</body>
+</html>
